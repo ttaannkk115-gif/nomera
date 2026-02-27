@@ -1,0 +1,235 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Агентство связи — Каталог</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tabs-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            background-color: #121212;
+            padding: 10px 10px 0 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 5px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            border: 1px solid #4ade80;
+            color: #ffffff;
+        }
+
+        .tab:first-child { border-radius: 12px 0 0 0; }
+        .tab:last-child { border-radius: 0 12px 0 0; border-left: none; }
+        .tab.active { background-color: #4ade80; color: #000; font-weight: bold; }
+
+        .content-section { display: none; width: 100%; max-width: 480px; padding: 15px; box-sizing: border-box; }
+        .content-section.active { display: block; }
+
+        /* Стили для тарифов */
+        .card {
+            background: #1e1e1e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .title { font-size: 18px; font-weight: bold; color: #fff; }
+        .price { font-size: 19px; font-weight: 900; }
+        .specs { color: #999; font-size: 14px; margin: 8px 0; }
+        .feature { font-size: 13px; color: #ccc; display: flex; align-items: center; margin-bottom: 4px; }
+        .feature::before { content: "•"; color: #4ade80; margin-right: 8px; }
+
+        .btn-order {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* Стили для номеров */
+        .search-box {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #000;
+            color: #fff;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .masks-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .mask-btn {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: monospace;
+        }
+
+        .footer { text-align: center; padding: 20px; color: #555; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="tabs-container">
+        <div id="tab-tariffs" class="tab active" onclick="openTab(event, 'tariffs')">Выгодные тарифы</div>
+        <div id="tab-numbers" class="tab" onclick="openTab(event, 'numbers')">Красивые номера</div>
+    </div>
+
+    <div id="tariffs" class="content-section active">
+        <div class="card">
+            <div class="card-header"><div class="title">Можно 300 / 100</div><div class="price">299 ₽</div></div>
+            <div class="specs">300 мин, 100 ГБ. Безлимит: соцсети, мессенджеры, видео.</div>
+            <button class="btn-order" onclick="order('Можно 300 / 100', '299')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">Лайт 100 / 1000</div><div class="price">300 ₽</div></div>
+            <div class="specs">100 мин, 1000 ГБ, 100 смс. Безлимит: музыка, видео.</div>
+            <button class="btn-order" onclick="order('Лайт 100 / 1000', '300')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">Партнер М 1000 / ∞</div><div class="price">300 ₽</div></div>
+            <div class="specs">1 000 мин, 200 смс. Полный Безлимит.</div>
+            <button class="btn-order" onclick="order('Партнер М 1000 / ∞', '300')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">Особый 1000 / 50</div><div class="price">325 ₽</div></div>
+            <div class="specs">1 000 мин, 50 ГБ. Безлимит: соцсети, мессенджеры.</div>
+            <button class="btn-order" onclick="order('Особый 1000 / 50', '325')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">МегаПросто 2000 / ∞</div><div class="price">390 ₽</div></div>
+            <div class="specs">2 000 мин, 100 смс. Полный Безлимит.</div>
+            <button class="btn-order" onclick="order('МегаПросто 2000 / ∞', '390')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">Просто 2000 / ∞</div><div class="price">399 ₽</div></div>
+            <div class="specs">2 000 мин. Полный Безлимит.</div>
+            <button class="btn-order" onclick="order('Просто 2000 / ∞', '399')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">MTC RED 1000 / ∞</div><div class="price">500 ₽</div></div>
+            <div class="specs">1 000 мин, 1000 смс. Полный Безлимит.</div>
+            <button class="btn-order" onclick="order('MTC RED 1000 / ∞', '500')">Выбрать</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><div class="title">Качай больше Акция! 900 / ∞</div><div class="price">555 ₽</div></div>
+            <div class="specs">900 мин. Безлимитный интернет по акции.</div>
+            <button class="btn-order" onclick="order('Качай больше Акция!', '555')">Выбрать</button>
+        </div>
+    </div>
+
+    <div id="numbers" class="content-section">
+        <div class="search-box">
+            <label>Поиск по цифрам:</label>
+            <input type="text" id="userDigits" placeholder="Например: 777" oninput="toggleBtn()">
+            <button id="searchBtn" class="btn-order" style="display:none; background:#128C7E;" onclick="sendSearch()">Найти номер</button>
+        </div>
+
+        <div class="masks-grid">
+            <div class="mask-btn" onclick="sendMask('AAAA***')">AAAA***</div>
+            <div class="mask-btn" onclick="sendMask('AAAABC')">AAAABC</div>
+            <div class="mask-btn" onclick="sendMask('AA*BBBB')">AA*BBBB</div>
+            <div class="mask-btn" onclick="sendMask('AAABCBC')">AAABCBC</div>
+            <div class="mask-btn" onclick="sendMask('*AAABBB')">*AAABBB</div>
+            <div class="mask-btn" onclick="sendMask('AABBCC')">AABBCC</div>
+            <div class="mask-btn" onclick="sendMask('ABCABC')">ABCABC</div>
+            <div class="mask-btn" onclick="sendMask('ABABAB')">ABABAB</div>
+            <div class="mask-btn" onclick="sendMask('AAABAA')">AAABAA</div>
+            <div class="mask-btn" onclick="sendMask('XYZ-XYZ')">XYZ-XYZ</div>
+            <div class="mask-btn" onclick="sendMask('100-200')">100-200</div>
+            <div class="mask-btn" onclick="sendMask('Зеркало')">ЗЕРКАЛО</div>
+        </div>
+    </div>
+
+    <div class="footer">© 2026, ООО «Агентство связи»</div>
+
+    <script>
+        const WA_PHONE = "79630080897";
+
+        function openTab(evt, name) {
+            let i, content, tabs;
+            content = document.getElementsByClassName("content-section");
+            for (i = 0; i < content.length; i++) content[i].classList.remove("active");
+            tabs = document.getElementsByClassName("tab");
+            for (i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+            document.getElementById(name).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function toggleBtn() {
+            const val = document.getElementById('userDigits').value;
+            document.getElementById('searchBtn').style.display = val.length > 0 ? 'block' : 'none';
+        }
+
+        function sendSearch() {
+            const val = document.getElementById('userDigits').value;
+            send(`Здравствуйте! Ищу номер с цифрами: ${val}`);
+        }
+
+        function sendMask(mask) {
+            send(`Здравствуйте! Хочу номер категории: ${mask}`);
+        }
+
+        function order(name, price) {
+            send(`Здравствуйте! Хочу тариф "${name}" за ${price} руб.`);
+        }
+
+        function send(msg) {
+            window.location.href = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;
+        }
+    </script>
+</body>
+</html>
